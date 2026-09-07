@@ -1,4 +1,12 @@
 {
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.simrankirpalani.space" }],
+      "destination": "https://simrankirpalani.space/:path*",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     { "source": "/", "destination": "/simrankirpalaniportfolio.html" }
   ]
