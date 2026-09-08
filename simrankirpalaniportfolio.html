@@ -815,87 +815,6 @@
     text-align: center;
   }
 
-  /* ---- modal (placeholder detail view architecture) ---- */
-  .mw-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    background: rgba(20,14,11,.72);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .3s ease;
-  }
-  .mw-modal-backdrop.open { opacity: 1; pointer-events: auto; }
-
-  .mw-modal-panel {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -47%);
-    width: min(640px, 90vw);
-    max-height: 82vh;
-    overflow-y: auto;
-    background: var(--paper);
-    z-index: 101;
-    padding: 46px 40px 40px;
-    box-shadow: 0 30px 60px rgba(0,0,0,.4);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .3s ease, transform .3s ease;
-  }
-  .mw-modal-backdrop.open + .mw-modal-panel {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translate(-50%, -50%);
-  }
-  .mw-modal-close {
-    position: absolute;
-    top: 18px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-family: 'Special Elite', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--red);
-    cursor: pointer;
-    padding: 6px;
-  }
-  .mw-modal-tag {
-    display: inline-block;
-    font-family: 'Special Elite', monospace;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--red);
-    border: 1px dashed rgba(181,31,36,.5);
-    border-radius: 20px;
-    padding: 4px 10px;
-    margin-bottom: 14px;
-  }
-  .mw-modal-title { font-size: clamp(26px, 4vw, 36px); color: var(--near-black); }
-  .mw-modal-sections {
-    display: grid;
-    gap: 20px;
-    margin-top: 26px;
-  }
-  .mw-modal-section-label {
-    font-family: 'Special Elite', monospace;
-    font-size: 10.5px;
-    letter-spacing: 1.6px;
-    text-transform: uppercase;
-    color: var(--red);
-    margin-bottom: 6px;
-  }
-  .mw-modal-section-body {
-    font-family: 'Special Elite', monospace;
-    font-size: 11.5px;
-    line-height: 1.6;
-    color: rgba(34,29,24,.5);
-    font-style: italic;
-  }
-
   /* ---- reduced motion ---- */
   @media (prefers-reduced-motion: reduce) {
     .meanwhile-wrap { height: auto; }
@@ -1393,35 +1312,6 @@
       </div>
     </section>
 
-    <div class="mw-modal-backdrop" data-modal-close></div>
-    <div class="mw-modal-panel" role="dialog" aria-modal="true">
-      <button class="mw-modal-close" data-modal-close>close &times;</button>
-      <span class="mw-modal-tag" hidden></span>
-      <h3 class="heading mw-modal-title"></h3>
-      <div class="mw-modal-sections">
-        <div>
-          <div class="mw-modal-section-label">Challenge</div>
-          <p class="mw-modal-section-body">content coming soon</p>
-        </div>
-        <div>
-          <div class="mw-modal-section-label">Insight</div>
-          <p class="mw-modal-section-body">content coming soon</p>
-        </div>
-        <div>
-          <div class="mw-modal-section-label">What I did</div>
-          <p class="mw-modal-section-body">content coming soon</p>
-        </div>
-        <div>
-          <div class="mw-modal-section-label">Execution</div>
-          <p class="mw-modal-section-body">content coming soon</p>
-        </div>
-        <div>
-          <div class="mw-modal-section-label">Evidence</div>
-          <p class="mw-modal-section-body">content coming soon</p>
-        </div>
-      </div>
-    </div>
-
     <section class="cta-close reveal" id="contact">
       <h2 class="cta-headline">
         <span class="cta-script">where to</span>
@@ -1621,23 +1511,13 @@
 
       var TILE_X = { reejh: -255, vivid: -85, lego: 85, nere: 255 };
 
-      var PROJECT_META = {
-        reejh: { name: 'REEJH', tag: null },
-        vivid: { name: 'Vivid Café & Lounge', tag: null },
-        nere:  { name: 'Nere', tag: 'self-initiated concept \u00b7 speculative' }
-      };
-
-      // Projects with a dedicated full case-study page navigate there instead of opening the modal.
       var PROJECT_PAGES = { lego: 'legohomecasestudy.html', vivid: 'vividcafecasestudy.html', reejh: 'reejhandcocasestudy.html', nere: 'nerecasestudy.html' };
 
       function goToProject(project) {
         var page = PROJECT_PAGES[project];
-        if (page) {
-          try { sessionStorage.setItem('portfolio_scrollY', String(window.scrollY)); } catch (e) {}
-          window.location.href = page;
-        } else {
-          openModal(project);
-        }
+        if (!page) return;
+        try { sessionStorage.setItem('portfolio_scrollY', String(window.scrollY)); } catch (e) {}
+        window.location.href = page;
       }
 
       function clamp01(v) { return Math.min(1, Math.max(0, v)); }
@@ -1661,32 +1541,6 @@
         el.style.transform = 'translate(-50%,-50%) translate(' + x + 'px,' + y + 'px) rotate(' + rot + 'deg) scale(' + scale + ')';
         el.style.opacity = Math.min(1, pe * 1.8);
       }
-
-      // ---- modal (placeholder architecture, no invented content) ----
-      var modalBackdrop = document.querySelector('.mw-modal-backdrop');
-      var modalPanel = document.querySelector('.mw-modal-panel');
-      var modalTitle = modalPanel.querySelector('.mw-modal-title');
-      var modalTag = modalPanel.querySelector('.mw-modal-tag');
-
-      function openModal(project) {
-        var meta = PROJECT_META[project];
-        if (!meta) return;
-        modalTitle.textContent = meta.name;
-        if (meta.tag) { modalTag.textContent = meta.tag; modalTag.hidden = false; }
-        else { modalTag.hidden = true; }
-        modalBackdrop.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-      function closeModal() {
-        modalBackdrop.classList.remove('open');
-        document.body.style.overflow = '';
-      }
-      document.querySelectorAll('[data-modal-close]').forEach(function (el) {
-        el.addEventListener('click', closeModal);
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeModal();
-      });
 
       if (!isMobile) {
         // ---- desktop: scroll-driven burst ----
