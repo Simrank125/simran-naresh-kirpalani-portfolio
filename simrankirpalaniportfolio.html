@@ -481,7 +481,7 @@
 
   .tools-wrap {
     position: relative;
-    background: var(--cream);
+    background: var(--red-deep);
     padding: 90px 0 104px;
     overflow: hidden;
   }
@@ -489,7 +489,7 @@
   .tools-dash {
     width: min(1100px, 92vw);
     margin: 0 auto;
-    border-top: 1.5px dashed rgba(34,29,24,.28);
+    border-top: 1.5px dashed rgba(250,244,232,.4);
   }
   .tools-dash-top { margin-bottom: 60px; }
   .tools-dash-bottom { margin-top: 60px; }
@@ -502,7 +502,7 @@
     letter-spacing: 1.5px;
     text-transform: uppercase;
     text-align: center;
-    color: var(--near-black);
+    color: var(--cream);
     margin: 0 0 60px;
   }
 
@@ -533,7 +533,10 @@
     display: block;
     width: 100%;
     height: 100%;
+    fill: var(--cream) !important;
   }
+  .tool-item svg path { fill: var(--cream) !important; }
+  .tool-rmit-logo svg path, .tool-rmit-logo svg g { fill: var(--cream) !important; }
 
   .tool-rmit-row {
     display: grid;
@@ -552,7 +555,7 @@
     font-size: 12px;
     letter-spacing: .3px;
     line-height: 1.55;
-    color: rgba(34,29,24,.68);
+    color: var(--cream);
     white-space: nowrap;
   }
   .tool-rmit-year {
@@ -560,7 +563,7 @@
     font-family: 'Special Elite', monospace;
     font-size: 12px;
     letter-spacing: .3px;
-    color: rgba(34,29,24,.5);
+    color: rgba(250,244,232,.75);
   }
 
   @media (prefers-reduced-motion: reduce) {
